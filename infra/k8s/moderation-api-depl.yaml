@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: moderation-api-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: moderation-api
+  template:
+    metadata:
+      labels:
+        app: moderation-api
+    spec:
+      containers:
+        - name: moderation-api
+          image: blog/moderation-api
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: moderation-api-srv
+spec:
+  selector:
+    app: moderation-api
+  ports:
+    - name: moderation-api
+      protocol: TCP
+      port: 4003
+      targetPort: 4003

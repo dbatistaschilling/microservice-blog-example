@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: query-api-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: query-api
+  template:
+    metadata:
+      labels:
+        app: query-api
+    spec:
+      containers:
+        - name: query-api
+          image: blog/query-api
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: query-api-srv
+spec:
+  selector:
+    app: query-api
+  ports:
+    - name: query-api
+      protocol: TCP
+      port: 4002
+      targetPort: 4002

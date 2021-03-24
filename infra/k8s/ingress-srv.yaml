@@ -1,0 +1,60 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: ingress-srv
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/use-regex: 'true'
+spec:
+  rules:
+    - host: blog.com
+      http:
+        paths:
+          - path: /posts
+            backend:
+              serviceName: posts-api-srv
+              servicePort: 4000
+          - path: /posts/create
+            backend:
+              serviceName: posts-api-srv
+              servicePort: 4000
+          - path: /posts-api/events
+            backend:
+              serviceName: posts-api-srv
+              servicePort: 4000
+          - path: /posts/?(.*)/comments
+            backend:
+              serviceName: comments-api-srv
+              servicePort: 4001
+          - path: /posts/?(.*)/comments/create
+            backend:
+              serviceName: comments-api-srv
+              servicePort: 4001
+          - path: /comments-api/events
+            backend:
+              serviceName: comments-api-srv
+              servicePort: 4001
+          - path: /posts/query
+            backend:
+              serviceName: query-api-srv
+              servicePort: 4002
+          - path: /query-api/events
+            backend:
+              serviceName: query-api-srv
+              servicePort: 4002
+          - path: /moderation-api/events
+            backend:
+              serviceName: moderation-api-srv
+              servicePort: 4003
+          - path: /event-bus-api/send-events
+            backend:
+              serviceName: event-bus-api-srv
+              servicePort: 4005
+          - path: /event-bus-api/request-events
+            backend:
+              serviceName: event-bus-api-srv
+              servicePort: 4005
+          - path: /?(.*)
+            backend:
+              serviceName: client-srv
+              servicePort: 3000

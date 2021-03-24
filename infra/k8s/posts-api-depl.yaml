@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: posts-api-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: posts-api
+  template:
+    metadata:
+      labels:
+        app: posts-api
+    spec:
+      containers:
+        - name: posts-api
+          image: blog/posts-api
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: posts-api-srv
+spec:
+  selector:
+    app: posts-api
+  ports:
+    - name: posts-api
+      protocol: TCP
+      port: 4000
+      targetPort: 4000
